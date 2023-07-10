@@ -1,0 +1,97 @@
+package codsoft;
+
+import java.util.Scanner;
+
+public class NumberGuessingGame 
+{
+
+    public static void main(String[] args) 
+    {
+    	// Initialize the scanner object.
+        @SuppressWarnings("resource")
+		Scanner scanner = new Scanner(System.in);
+        
+        // Generate a random number between 1 and 100.
+    	int randomNumber = (int) (Math.random() * 100) + 1;
+
+        // Limit the number of attempts the user has to guess the number is 4.
+        int maxAttempts = 4;
+
+        // Initialize the user's score to 0.
+        int score = 0;
+
+        // Loop until the user guesses the correct number or reaches the maximum number of attempts.
+        while (score < maxAttempts) 
+        {
+            // Prompt the user to enter their guess.
+        	System.out.println("I'm thinking of a number between 1 and 100. Can you guess it? ");
+            int guess = scanner.nextInt();
+
+            // Compare the user's guess with the generated number and provide feedback.
+            if (guess == randomNumber) 
+            {
+                System.out.println("Congratulations! You guessed the correct number in " + score + " attempts.");
+                break;
+            } 
+            else if (guess < randomNumber) 
+            {
+                System.out.println("Your guess is too low.");
+            } 
+            else 
+            {
+                System.out.println("Your guess is too high.");
+            }
+
+            score++;
+        }
+
+        // If the user reached the maximum number of attempts, print a message.
+        if (score == maxAttempts) 
+        {
+            System.out.println("Sorry, you didn't guess the correct number. The number was " + randomNumber);
+        }
+
+        // Ask the user if they want to play again.
+        System.out.println("Do you want to play again? (y/n)");
+		String answer = scanner.next();
+
+        // If the user wants to play again, reset the score and start a new game.
+        if (answer.equalsIgnoreCase("y")) 
+        {
+            System.out.println("Score has been reset.");
+            score = 0;
+            randomNumber = (int) (Math.random() * 100) + 1;
+
+            // This code will keep looping until the user enters "n" to indicate that they do not want to play again.
+            while (answer.equalsIgnoreCase("y")) 
+            {
+                
+                // Prompt the user to enter their guess.
+                System.out.println("I'm thinking of a number between 1 and 100. Can you guess it?");
+                int guess = scanner.nextInt();
+
+                // Compare the user's guess with the generated number and provide feedback.
+                if (guess == randomNumber) 
+                {
+                    System.out.println("Congratulations! You guessed the correct number in " + score + " attempts.");
+                    break;
+                } 
+                else if (guess < randomNumber) 
+                {
+                    System.out.println("Your guess is too low.");
+                } 
+                else 
+                {
+                    System.out.println("Your guess is too high.");
+                }
+
+                score++;
+            }
+        } 
+        else 
+        {
+            System.out.println("Thanks for playing!");
+            System.exit(0);
+        }
+    }
+}
