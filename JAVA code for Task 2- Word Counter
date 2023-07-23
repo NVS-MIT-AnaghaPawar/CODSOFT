@@ -1,0 +1,117 @@
+//Name: Anagha Pawar
+
+package codsoft;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+public class WordCounter 
+{
+    public static void main(String[] args) 
+    {
+        @SuppressWarnings("resource")
+		Scanner scanner = new Scanner(System.in);
+
+        // Prompt the user to enter text or provide a file
+        System.out.println("******WELCOME TO THE GAME - WORD COUNTER******");
+        System.out.println("Enter 'T' to input text, 'F' to input a file: ");
+        String choice = scanner.nextLine().toUpperCase();
+
+        String text = "";
+        switch (choice) 
+        {
+            case "T":
+                System.out.println("Enter the text: ");
+                text = scanner.nextLine();
+                break;
+            case "F":
+                System.out.println("Enter the file path: ");
+                String filePath = scanner.nextLine();
+                try 
+                {
+                    text = readFromFile(filePath);
+                } catch (IOException e) 
+                {
+                    System.out.println("Error reading file: " + e.getMessage());
+                    return;
+                }
+                break;
+            default:
+                System.out.println("Invalid choice.");
+                return;
+        }
+
+        // Split the text into an array of words
+        String[] words = text.split("[\\p{Punct}\\s]+");
+
+        // Count the words
+        int wordCount = countWords(words);
+
+        System.out.println("Total word count: " + wordCount);
+
+        // Ignore common words or stop words
+        String[] stopWords = {"the", "and", "is", "of", "it", "in", "to", "a"};
+        int stopWordCount = countStopWords(words, stopWords);
+        System.out.println("Stop word count: " + stopWordCount);
+
+        // Count unique words and their frequency
+        Map<String, Integer> wordFrequency = countWordFrequency(words);
+        System.out.println("Unique word count: " + wordFrequency.size());
+        System.out.println("Word frequency: ");
+        for (Map.Entry<String, Integer> entry : wordFrequency.entrySet()) 
+        {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
+    }
+
+    private static String readFromFile(String filePath) throws IOException 
+    {
+        StringBuilder stringBuilder = new StringBuilder();
+        BufferedReader reader = new BufferedReader(new FileReader(filePath));
+        String line;
+        while ((line = reader.readLine()) != null) 
+        {
+            stringBuilder.append(line);
+            stringBuilder.append(System.lineSeparator());
+        }
+        reader.close();
+        return stringBuilder.toString();
+    }
+
+    private static int countWords(String[] words) 
+    {
+        return words.length;
+    }
+
+    private static int countStopWords(String[] words, String[] stopWords) 
+    {
+        int count = 0;
+        for (String word : words) 
+        {
+            for (String stopWord : stopWords) 
+            {
+                if (word.equalsIgnoreCase(stopWord)) 
+                {
+                    count++;
+                    break;
+                }
+            }
+        }
+        return count;
+    }
+
+    private static Map<String, Integer> countWordFrequency(String[] words) 
+    {
+        Map<String, Integer> wordFrequency = new HashMap<>();
+        for (String word : words) 
+        {
+            wordFrequency.put(word, wordFrequency.getOrDefault(word, 0) + 1);
+        }
+        return wordFrequency;
+    }
+}
+
